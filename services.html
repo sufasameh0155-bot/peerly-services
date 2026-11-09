@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="htmlRoot">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Peerly - سوق خدمات الطلاب</title>
+    <!-- FontAwesome للإيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font (Cairo) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================================
+           ألوان Peerly الموحدة، مأخوذة من شعار الجامعة
+           ========================================================= */
+        :root {
+          /* ألوان الهوية */
+          --teal: #3fb0ac;        /* التيل: الزخارف والتفاصيل */
+          --lime: #8dc63f;        /* الأخضر الليموني: التمييز والعناصر المهمة */
+          --charcoal: #343534;    /* الفحمي: الأقسام الداكنة */
+          --brand: #17807c;       /* لون الأزرار والروابط (أغمق للوضوح) */
+          /* الوضع الفاتح (الخلفية بيضاء) */
+          --bg: #ffffff;          /* خلفية الصفحة */
+          --surface: #f3f8f7;     /* خلفية البطاقات والأقسام */
+          --text: #25282b;        /* النص الأساسي */
+          --muted: #5c6a68;       /* النص الثانوي */
+          --line: #dce6e4;        /* الحدود والفواصل */
+          /* ألوان الحالات والنصوص الخاصة */
+          --white: #ffffff;       /* أبيض ثابت */
+          --error: #e5484d;       /* رسائل الخطأ */
+          --on-lime: #1d2a0a;     /* النص فوق الأخضر الليموني */
+          --on-dark-muted: #c8d4d2; /* نص ثانوي فوق الخلفية الفحمية */
+          
+          --modal-bg: rgba(37, 40, 43, 0.7);
+          --shadow-sm: 0 2px 4px rgba(23, 128, 124, 0.05);
+          --shadow-md: 0 8px 20px rgba(23, 128, 124, 0.08);
+          --shadow-lg: 0 15px 35px rgba(23, 128, 124, 0.12);
+          --radius-sm: 8px;
+          --radius-md: 16px;
+          --radius-lg: 24px;
+        }
+
+        /* الوضع الداكن */
+        [data-theme="dark"] {
+          --bg: #111617;
+          --surface: #192123;
+          --text: #edf3f2;
+          --muted: #9bb0ad;
+          --line: #27353a;
+          --brand: #2a9d98;
+          --modal-bg: rgba(0, 0, 0, 0.85);
+          --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+          --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.3);
+          --shadow-lg: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding-bottom: 60px;
+            overflow-x: hidden;
+        }
+
+        /* --- الهيدر الاحترافي --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 8%;
+            background-color: var(--surface);
+            border-bottom: 1px solid var(--line);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 1.9rem;
+            font-weight: 800;
+            color: var(--brand);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .logo i {
+            background: linear-gradient(135deg, var(--brand), var(--teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+        }
+
+        .control-btn {
+            background: var(--bg);
+            border: 1px solid var(--line);
+            color: var(--text);
+            padding: 9px 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .control-btn:hover {
+            border-color: var(--teal);
+            color: var(--brand);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* --- الهيدر التجاري الجذاب --- */
+        .page-header {
+            text-align: center;
+            margin: 50px 0 35px;
+            position: relative;
+        }
+
+        .page-header h1 {
+            font-size: 2.6rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: var(--brand);
+            background: linear-gradient(135deg, var(--brand) 0%, var(--teal) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-header p {
+            color: var(--muted);
+            font-size: 1.15rem;
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* --- شريط البحث المستطيل البروفيشنال --- */
+        .search-box {
+            max-width: 650px;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 16px 50px 16px 24px;
+            border: 2px solid var(--line);
+            border-radius: 50px;
+            background-color: var(--surface);
+            color: var(--text);
+            font-size: 1.05rem;
+            outline: none;
+            box-shadow: var(--shadow-sm);
+        }
+
+        [dir="ltr"] .search-box input {
+            padding: 16px 24px 16px 50px;
+        }
+
+        .search-box input:focus {
+            border-color: var(--teal);
+            box-shadow: 0 0 0 4px rgba(63, 176, 172, 0.15);
+        }
+
+        .search-box i {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--brand);
+            font-size: 1.3rem;
+        }
+
+        [dir="rtl"] .search-box i { right: 20px; }
+        [dir="ltr"] .search-box i { left: 20px; }
+
+        /* --- أزرار الفلترة الفخمة --- */
+        .filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .filter-btn {
+            background-color: var(--surface);
+            border: 1.5px solid var(--line);
+            color: var(--text);
+            padding: 10px 24px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--teal);
+            color: var(--brand);
+        }
+
+        .filter-btn.active {
+            background-color: var(--brand);
+            color: var(--white);
+            border-color: var(--brand);
+            box-shadow: 0 4px 12px rgba(23, 128, 124, 0.3);
+        }
+
+        /* --- شبكة الكروت المحترفة --- */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 28px;
+        }
+
+        .service-card {
+            background-color: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--teal), var(--lime));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--teal);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .service-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, rgba(63, 176, 172, 0.15), rgba(141, 198, 63, 0.15));
+            color: var(--brand);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.9rem;
+            margin-bottom: 18px;
+        }
+
+        .card-category {
+            font-size: 0.82rem;
+            color: var(--brand);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 8px 0 14px;
+            color: var(--text);
+            line-height: 1.4;
+        }
+
+        .card-price {
+            display: inline-flex;
+            align-items: center;
+            font-size: 1.05rem;
+            font-weight: 700;
+            background-color: var(--lime);
+            color: var(--on-lime);
+            padding: 5px 14px;
+            border-radius: 20px;
+            margin-bottom: 22px;
+        }
+
+        .btn-details {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            background: linear-gradient(135deg, var(--brand), var(--teal));
+            color: var(--white);
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(23, 128, 124, 0.2);
+        }
+
+        .btn-details:hover {
+            opacity: 0.92;
+            transform: translateY(-1px);
+        }
+
+        .no-results {
+            display: none;
+            text-align: center;
+            padding: 60px 0;
+            width: 100%;
+            grid-column: 1 / -1;
+        }
+
+        .no-results i {
+            font-size: 4.5rem;
+            color: var(--teal);
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+
+        /* --- مودال تفاصيل الخدمة الاحترافي --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--modal-bg);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: var(--surface);
+            width: 100%;
+            max-width: 580px;
+            border-radius: var(--radius-lg);
+            padding: 35px;
+            position: relative;
+            box-shadow: var(--shadow-lg);
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid var(--line);
+        }
+
+        .close-modal {
+            position: absolute;
+            background: var(--bg);
+            border: 1px solid var(--line);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--muted);
+            cursor: pointer;
+            top: 25px;
+        }
+        [dir="rtl"] .close-modal { left: 25px; }
+        [dir="ltr"] .close-modal { right: 25px; }
+
+        .close-modal:hover {
+            color: var(--error);
+            border-color: var(--error);
+        }
+
+        .detail-icon {
+            width: 85px;
+            height: 85px;
+            background: linear-gradient(135deg, rgba(63, 176, 172, 0.2), rgba(141, 198, 63, 0.2));
+            color: var(--brand);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            margin-bottom: 22px;
+        }
+
+        .detail-category {
+            display: inline-block;
+            background: rgba(63, 176, 172, 0.15);
+            color: var(--brand);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .detail-price {
+            display: inline-block;
+            font-size: 1.25rem;
+            font-weight: 800;
+            background-color: var(--lime);
+            color: var(--on-lime);
+            padding: 6px 18px;
+            border-radius: 25px;
+            margin: 12px 0 18px;
+        }
+
+        .detail-description {
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: 1rem;
+            margin-bottom: 28px;
+        }
+
+        .provider-box {
+            background-color: var(--bg);
+            border: 1px solid var(--line);
+            padding: 18px 22px;
+            border-radius: var(--radius-md);
+            margin-bottom: 28px;
+        }
+
+        .provider-box h4 {
+            font-size: 0.98rem;
+            margin-bottom: 12px;
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .provider-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 0.92rem;
+            color: var(--muted);
+        }
+
+        .provider-info i {
+            width: 22px;
+            color: var(--brand);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 16px;
+        }
+
+        .btn-primary-action {
+            flex: 2;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--brand), var(--teal));
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-secondary-action {
+            flex: 1;
+            padding: 14px;
+            background-color: transparent;
+            border: 1.5px solid var(--line);
+            color: var(--text);
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* =========================================================
+           أيقونة الروبوت العائمة والتفاعلية (Floating AI Robot)
+           ========================================================= */
+        .ai-robot-btn {
+            position: fixed;
+            bottom: 35px;
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--brand), var(--teal));
+            color: var(--white);
+            border: 3px solid var(--lime);
+            box-shadow: 0 10px 25px rgba(23, 128, 124, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 1001;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        [dir="rtl"] .ai-robot-btn { left: 35px; }
+        [dir="ltr"] .ai-robot-btn { right: 35px; }
+
+        .ai-robot-btn:hover {
+            transform: scale(1.12) rotate(8deg);
+            box-shadow: 0 14px 30px rgba(141, 198, 63, 0.4);
+        }
+
+        /* نافذة الشات التفاعلية للروبوت */
+        .ai-chat-window {
+            position: fixed;
+            bottom: 115px;
+            width: 380px;
+            max-width: 90vw;
+            height: 520px;
+            background-color: var(--surface);
+            border: 2px solid var(--teal);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1000;
+            animation: popup 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        [dir="rtl"] .ai-chat-window { left: 35px; }
+        [dir="ltr"] .ai-chat-window { right: 35px; }
+
+        @keyframes popup {
+            from { opacity: 0; transform: translateY(30px) scale(0.85); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .ai-chat-header {
+            background: linear-gradient(135deg, var(--brand), var(--teal));
+            color: var(--white);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .ai-chat-header-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.05rem;
+        }
+
+        .ai-close-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: var(--white);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ai-chat-body {
+            flex: 1;
+            padding: 18px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background-color: var(--bg);
+        }
+
+        .ai-msg {
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 0.92rem;
+            line-height: 1.5;
+            max-width: 85%;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .ai-msg.user {
+            background-color: var(--brand);
+            color: var(--white);
+            align-self: flex-end;
+            border-bottom-right-radius: 3px;
+        }
+
+        .ai-msg.bot {
+            background-color: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--line);
+            align-self: flex-start;
+            border-bottom-left-radius: 3px;
+        }
+
+        .ai-chat-footer {
+            padding: 14px;
+            background-color: var(--surface);
+            border-top: 1px solid var(--line);
+            display: flex;
+            gap: 10px;
+        }
+
+        .ai-chat-footer input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1.5px solid var(--line);
+            border-radius: 30px;
+            background-color: var(--bg);
+            color: var(--text);
+            font-size: 0.92rem;
+            outline: none;
+        }
+
+        .ai-chat-footer input:focus {
+            border-color: var(--teal);
+        }
+
+        .ai-send-btn {
+            background: linear-gradient(135deg, var(--brand), var(--teal));
+            color: var(--white);
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .ai-send-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-graduation-cap"></i> Peerly
+        </div>
+        <div class="controls">
+            <!-- زر تبديل اللغة -->
+            <button class="control-btn" id="langToggle">
+                <i class="fa-solid fa-globe"></i> <span id="langText">English</span>
+            </button>
+            <!-- زر تبديل الثيم -->
+            <button class="control-btn" id="themeToggle">
+                <i class="fa-solid fa-moon"></i> <span id="themeText">Dark Mode</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 id="mainTitle">سوق خدمات الطلاب</h1>
+            <p id="mainSubtitle">استكشف أفضل الخدمات الأكاديمية والتقنية المقدمة من زملائك بالجامعة</p>
+        </div>
+
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="ابحث عن خدمة (مثال: برمجة، ترجمة، لابات...)...">
+        </div>
+
+        <div class="filters" id="filterContainer">
+            <button class="filter-btn active" data-category="all" id="catAll">الكل</button>
+            <button class="filter-btn" data-category="courses" id="cat1">كورسات</button>
+            <button class="filter-btn" data-category="translation" id="cat2">تدقيق وترجمة</button>
+            <button class="filter-btn" data-category="tech" id="cat3">حل مشاكل تقنية</button>
+            <button class="filter-btn" data-category="design" id="cat4">طباعة وتصميم</button>
+            <button class="filter-btn" data-category="academic" id="cat5">استشارات أكاديمية</button>
+        </div>
+
+        <div class="services-grid" id="servicesGrid"></div>
+
+        <div class="no-results" id="noResults">
+            <i class="fa-solid fa-folder-open"></i>
+            <h3 id="noResTitle">لا توجد نتائج مطابقة لبحثك</h3>
+            <p id="noResDesc" style="color: var(--muted); margin-top: 6px;">جرب البحث بكلمات أخرى أو اختر تصنيفاً مختلفاً.</p>
+        </div>
+    </div>
+
+    <!-- --- زر الروبوت العائم لمساعد الـ AI --- -->
+    <button class="ai-robot-btn" id="aiRobotBtn" title="تحدث مع روبوت Peerly الذكي">
+        <i class="fa-solid fa-robot"></i>
+    </button>
+
+    <!-- --- نافذة شات الروبوت --- -->
+    <div class="ai-chat-window" id="aiChatWindow">
+        <div class="ai-chat-header">
+            <div class="ai-chat-header-title">
+                <i class="fa-solid fa-robot"></i>
+                <span id="aiHeaderTitle">مساعد Peerly الذكي</span>
+            </div>
+            <button class="ai-close-btn" id="aiCloseBtn">&times;</button>
+        </div>
+
+        <div class="ai-chat-body" id="aiChatBox">
+            <div class="ai-msg bot" id="aiWelcomeMsg">
+                أهلاً بك! أنا روبوت Peerly الذكي. كيف يمكنني مساعدتك في اقتراح الخدمات المناسبة لدراستك؟
+            </div>
+        </div>
+
+        <div class="ai-chat-footer">
+            <input type="text" id="aiInputText" placeholder="اسأل الروبوت (مثال: محتاج كورس برمجة)...">
+            <button class="ai-send-btn" id="aiSendBtn">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- مودال التفاصيل -->
+    <div class="modal-overlay" id="detailsModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal">&times;</button>
+            
+            <div class="detail-icon" id="modalIcon"></div>
+
+            <div class="detail-header">
+                <span class="detail-category" id="modalCategory"></span>
+                <h2 id="modalTitle"></h2>
+                <div class="detail-price" id="modalPrice"></div>
+            </div>
+
+            <p class="detail-description" id="modalDescription"></p>
+
+            <div class="provider-box">
+                <h4 id="providerTitle">بيانات مقدم الخدمة (تجريبي):</h4>
+                <div class="provider-info">
+                    <span><i class="fa-solid fa-user"></i> <strong id="providerName"></strong></span>
+                    <span><i class="fa-solid fa-envelope"></i> <span id="providerEmail"></span></span>
+                    <span><i class="fa-solid fa-phone"></i> <span id="providerPhone"></span></span>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-primary-action" id="btnOrder">طلب الخدمة</button>
+                <button class="btn-secondary-action" id="btnBack">العودة للخدمات</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            ar: {
+                pageTitle: "Peerly - سوق خدمات الطلاب",
+                mainTitle: "سوق خدمات الطلاب",
+                mainSubtitle: "استكشف أفضل الخدمات الأكاديمية والتقنية المقدمة من زملائك بالجامعة",
+                searchPlaceholder: "ابحث عن خدمة (مثال: برمجة، ترجمة، لابات...)...",
+                all: "الكل",
+                cat1: "كورسات",
+                cat2: "تدقيق وترجمة",
+                cat3: "حل مشاكل تقنية",
+                cat4: "طباعة وتصميم",
+                cat5: "استشارات أكاديمية",
+                noResTitle: "لا توجد نتائج مطابقة لبحثك",
+                noResDesc: "جرب البحث بكلمات أخرى أو اختر تصنيفاً مختلفاً.",
+                detailsBtn: "زر التفاصيل",
+                providerTitle: "بيانات مقدم الخدمة (تجريبي):",
+                btnOrder: "طلب الخدمة",
+                btnBack: "العودة للخدمات",
+                orderAlert: "سيتم تحويلك الآن إلى صفحة طلب الخدمة...",
+                darkMode: "Dark Mode",
+                lightMode: "Light Mode",
+                aiHeaderTitle: "مساعد Peerly الذكي",
+                aiWelcomeMsg: "أهلاً بك! أنا روبوت Peerly الذكي. كيف يمكنني مساعدتك في اقتراح الخدمات المناسبة لدراستك؟",
+                aiInputPlaceholder: "اسأل الروبوت (مثال: محتاج كورس برمجة)...",
+                categories: {
+                    courses: "كورسات",
+                    translation: "تدقيق وترجمة",
+                    tech: "حل مشاكل تقنية",
+                    design: "طباعة وتصميم",
+                    academic: "استشارات أكاديمية"
+                }
+            },
+            en: {
+                pageTitle: "Peerly - Student Services Marketplace",
+                mainTitle: "Student Services Marketplace",
+                mainSubtitle: "Explore the best academic and technical services provided by your peers",
+                searchPlaceholder: "Search for a service (e.g. programming, translation, labs)...",
+                all: "All",
+                cat1: "Courses",
+                cat2: "Proofreading & Translation",
+                cat3: "Tech Troubleshooting",
+                cat4: "Printing & Design",
+                cat5: "Academic Consulting",
+                noResTitle: "No matching results found",
+                noResDesc: "Try searching with different keywords or select another category.",
+                detailsBtn: "View Details",
+                providerTitle: "Service Provider Info (Demo):",
+                btnOrder: "Request Service",
+                btnBack: "Back to Services",
+                orderAlert: "You will be redirected to the service request page...",
+                darkMode: "Dark Mode",
+                lightMode: "Light Mode",
+                aiHeaderTitle: "Peerly AI Robot",
+                aiWelcomeMsg: "Hello! I am Peerly AI Robot. How can I help you find the right services today?",
+                aiInputPlaceholder: "Ask Robot (e.g. need a programming course)...",
+                categories: {
+                    courses: "Courses",
+                    translation: "Proofreading & Translation",
+                    tech: "Tech Troubleshooting",
+                    design: "Printing & Design",
+                    academic: "Academic Consulting"
+                }
+            }
+        };
+
+        const servicesData = [
+            { id: 1, catKey: "courses", titleAr: "كورس أساسيات البرمجة بـ C++", titleEn: "C++ Programming Fundamentals", price: "150 EGP", icon: "fa-code", descAr: "شرح كامل لمبادئ البرمجة الهيكلية والحل لجميع الشيتات الأكاديمية خطوة بخطوة.", descEn: "Complete explanation of structural programming principles and step-by-step solutions for academic sheets.", provider: { name: "أحمد محمود / Ahmed Mahmoud", email: "ahmed.m@univ.edu.eg", phone: "+20 101 234 5678" } },
+            { id: 2, catKey: "courses", titleAr: "كورس الرياضيات الجامعية (Math 1 & 2)", titleEn: "University Mathematics (Math 1 & 2)", price: "200 EGP", icon: "fa-calculator", descAr: "مراجعة شاملة للتفاضل والتكامل وحل امتحانات السنوات السابقة.", descEn: "Comprehensive review of calculus and past exams solutions.", provider: { name: "سارة علي / Sara Ali", email: "sara.a@univ.edu.eg", phone: "+20 112 345 6789" } },
+            { id: 3, catKey: "courses", titleAr: "كورس محادثة باللغة الإنجليزية", titleEn: "English Conversation Course", price: "120 EGP", icon: "fa-language", descAr: "جلسات تفاعلية لتطوير مهارات التحدث والـ Presentation.", descEn: "Interactive sessions to improve speaking and presentation skills.", provider: { name: "عمر خالد / Omar Khaled", email: "omar.k@univ.edu.eg", phone: "+20 120 987 6543" } },
+            
+            { id: 4, catKey: "translation", titleAr: "تدقيق لغوي وإملائي للأبحاث", titleEn: "Research Proofreading & Editing", price: "80 EGP", icon: "fa-pen-nib", descAr: "مراجعة دقيقة للمقالات والأبحاث والتأكد من خلوها من الأخطاء.", descEn: "Careful review of papers and articles to ensure error-free writing.", provider: { name: "مريم حسن / Maryam Hassan", email: "maryam.h@univ.edu.eg", phone: "+20 109 876 5432" } },
+            { id: 5, catKey: "translation", titleAr: "ترجمة أكاديمية (إنجليزي - عربي)", titleEn: "Academic Translation (EN - AR)", price: "100 EGP", icon: "fa-language", descAr: "ترجمة احترافية للمقالات العلمية والتقارير الأكاديمية.", descEn: "Professional translation of scientific articles and academic reports.", provider: { name: "محمد ياسر / Mohamed Yasser", email: "m.yasser@univ.edu.eg", phone: "+20 115 432 1098" } },
+            { id: 6, catKey: "translation", titleAr: "تلخيص المقالات والمراجع المعقدة", titleEn: "Complex Papers & References Summary", price: "90 EGP", icon: "fa-file-lines", descAr: "تلخيص الأوراق البحثية والمراجع الطويلة في نقاط مركزة.", descEn: "Summarizing research papers and long references into concise points.", provider: { name: "نور إبراهيم / Nour Ibrahim", email: "nour.i@univ.edu.eg", phone: "+20 100 112 2334" } },
+
+            { id: 7, catKey: "tech", titleAr: "تصليح لابات وصيانة السوفتوير", titleEn: "Laptop Repair & Software Maintenance", price: "150 EGP", icon: "fa-laptop-code", descAr: "تنزيل وتثبيت الويندوز، تنظيف الجهاز من الفيروسات، حل مشاكل البطء.", descEn: "Windows installation, virus cleanup, and fixing slow performance.", provider: { name: "يوسف سامح / Youssef Sameh", email: "youssef.s@univ.edu.eg", phone: "+20 106 554 4332" } },
+            { id: 8, catKey: "tech", titleAr: "تثبيت وتفعيل البرامج الأكاديمية", titleEn: "Academic Software Installation", price: "60 EGP", icon: "fa-gears", descAr: "تثبيت برامج الهندسة والبرمجة والتصميم (MATLAB, VS Code, AutoCAD).", descEn: "Installing engineering, programming and design software.", provider: { name: "كريم ماجد / Kareem Maged", email: "kareem.m@univ.edu.eg", phone: "+20 111 887 7665" } },
+            { id: 9, catKey: "tech", titleAr: "حل المشاكل البرمجية و Bugs", titleEn: "Debugging & Code Problem Solving", price: "110 EGP", icon: "fa-bug-slash", descAr: "مساعدة الطلاب في اكتشاف وتصحيح الأخطاء البرمجية بالمشاريع.", descEn: "Helping students find and fix bugs in their programming projects.", provider: { name: "حسام مصطفى / Hossam Moustafa", email: "hossam.m@univ.edu.eg", phone: "+20 122 334 4556" } },
+
+            { id: 10, catKey: "design", titleAr: "طباعة ملازم ومذكرات وتوصيلها", titleEn: "Printing & Notes Delivery", price: "50 EGP", icon: "fa-print", descAr: "طباعة عالية الجودة للأوراق وتغليفها وتوصيلها للحرم الجامعي.", descEn: "High quality paper printing, binding, and campus delivery.", provider: { name: "مصطفى طارق / Mostafa Tariq", email: "m.tariq@univ.edu.eg", phone: "+20 102 998 8776" } },
+            { id: 11, catKey: "design", titleAr: "تصميم بوستر / برزنتيشن احترافي", titleEn: "Professional Poster / Presentation Design", price: "130 EGP", icon: "fa-display", descAr: "تصميم عروض تقديمية وبوسترات علمية جذابة للمشاريع.", descEn: "Designing engaging presentations and scientific project posters.", provider: { name: "داليا نبيل / Dalia Nabil", email: "dalia.n@univ.edu.eg", phone: "+20 114 556 6778" } },
+            { id: 12, catKey: "design", titleAr: "تصميم لوجو وهويات بصرية", titleEn: "Logo & Visual Identity Design", price: "180 EGP", icon: "fa-palette", descAr: "ابتكار شعارات وبوسترات دعاية للأنشطة الطلابية.", descEn: "Creating unique logos and promotional posters for student activities.", provider: { name: "زياد سامح / Ziad Sameh", email: "ziad.s@univ.edu.eg", phone: "+20 101 776 6554" } },
+
+            { id: 13, catKey: "academic", titleAr: "استشارة اختيار التخصص والمسار", titleEn: "Major & Career Path Consultation", price: "70 EGP", icon: "fa-compass", descAr: "جلسة توجيهية لمساعدة الطلاب في اختيار التخصص المناسب.", descEn: "Guidance session to help students choose the right major.", provider: { name: "د. هاني عادل / Dr. Hany Adel", email: "hany.a@univ.edu.eg", phone: "+20 128 443 3221" } },
+            { id: 14, catKey: "academic", titleAr: "مساعدة في التقديم على المنح والتدريب", titleEn: "Internships & Scholarships Application", price: "100 EGP", icon: "fa-graduation-cap", descAr: "مراجعة الـ CV وخطاب الدافع للتقديم على التدريبات.", descEn: "Reviewing CVs and motivation letters for internships.", provider: { name: "رانيا جمال / Rania Gamal", email: "rania.g@univ.edu.eg", phone: "+20 109 223 3445" } },
+            { id: 15, catKey: "academic", titleAr: "استشارات نفسية ودعم للطلاب", titleEn: "Student Psychological & Support Consulting", price: "مجاناً / Free", icon: "fa-heart-pulse", descAr: "جلسات استماع لتنظيم الوقت والتعامل مع ضغوط الامتحانات.", descEn: "Listening sessions for time management and handling exams stress.", provider: { name: "أحمد وائل / Ahmed Wael", email: "ahmed.w@univ.edu.eg", phone: "+20 112 990 0112" } }
+        ];
+
+        let currentLang = 'ar';
+        let currentCategory = 'all';
+        let searchQuery = '';
+        let activeModalId = null;
+
+        const htmlRoot = document.getElementById('htmlRoot');
+        const langToggle = document.getElementById('langToggle');
+        const langText = document.getElementById('langText');
+        const themeToggle = document.getElementById('themeToggle');
+        const themeText = document.getElementById('themeText');
+        
+        const servicesGrid = document.getElementById('servicesGrid');
+        const searchInput = document.getElementById('searchInput');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const noResults = document.getElementById('noResults');
+
+        const detailsModal = document.getElementById('detailsModal');
+        const closeModalBtn = document.getElementById('closeModal');
+        const btnBack = document.getElementById('btnBack');
+        const btnOrder = document.getElementById('btnOrder');
+
+        // عناصر الروبوت الذكي
+        const aiRobotBtn = document.getElementById('aiRobotBtn');
+        const aiChatWindow = document.getElementById('aiChatWindow');
+        const aiCloseBtn = document.getElementById('aiCloseBtn');
+        const aiChatBox = document.getElementById('aiChatBox');
+        const aiInputText = document.getElementById('aiInputText');
+        const aiSendBtn = document.getElementById('aiSendBtn');
+
+        function updateTexts() {
+            const t = translations[currentLang];
+            htmlRoot.setAttribute('lang', currentLang);
+            htmlRoot.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+
+            document.getElementById('pageTitle').textContent = t.pageTitle;
+            document.getElementById('mainTitle').textContent = t.mainTitle;
+            document.getElementById('mainSubtitle').textContent = t.mainSubtitle;
+            searchInput.placeholder = t.searchPlaceholder;
+
+            document.getElementById('catAll').textContent = t.all;
+            document.getElementById('cat1').textContent = t.cat1;
+            document.getElementById('cat2').textContent = t.cat2;
+            document.getElementById('cat3').textContent = t.cat3;
+            document.getElementById('cat4').textContent = t.cat4;
+            document.getElementById('cat5').textContent = t.cat5;
+
+            document.getElementById('noResTitle').textContent = t.noResTitle;
+            document.getElementById('noResDesc').textContent = t.noResDesc;
+            document.getElementById('providerTitle').textContent = t.providerTitle;
+            document.getElementById('btnOrder').textContent = t.btnOrder;
+            document.getElementById('btnBack').textContent = t.btnBack;
+
+            document.getElementById('aiHeaderTitle').textContent = t.aiHeaderTitle;
+            document.getElementById('aiWelcomeMsg').textContent = t.aiWelcomeMsg;
+            aiInputText.placeholder = t.aiInputPlaceholder;
+
+            langText.textContent = currentLang === 'ar' ? 'English' : 'العربية';
+
+            renderServices();
+            if (activeModalId !== null) {
+                openDetails(activeModalId, true);
+            }
+        }
+
+        function renderServices() {
+            servicesGrid.innerHTML = '';
+            const t = translations[currentLang];
+
+            const filtered = servicesData.filter(service => {
+                const matchesCategory = currentCategory === 'all' || service.catKey === currentCategory;
+                const title = currentLang === 'ar' ? service.titleAr : service.titleEn;
+                const desc = currentLang === 'ar' ? service.descAr : service.descEn;
+                const matchesSearch = title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                      desc.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                noResults.style.display = 'block';
+            } else {
+                noResults.style.display = 'none';
+                filtered.forEach(service => {
+                    const card = document.createElement('div');
+                    card.className = 'service-card';
+                    const title = currentLang === 'ar' ? service.titleAr : service.titleEn;
+                    const catName = t.categories[service.catKey];
+
+                    card.innerHTML = `
+                        <div>
+                            <div class="card-icon"><i class="fa-solid ${service.icon}"></i></div>
+                            <span class="card-category">${catName}</span>
+                            <h3 class="card-title">${title}</h3>
+                        </div>
+                        <div>
+                            <div class="card-price">${service.price}</div>
+                            <button class="btn-details" onclick="openDetails(${service.id})">${t.detailsBtn}</button>
+                        </div>
+                    `;
+                    servicesGrid.appendChild(card);
+                });
+            }
+        }
+
+        // --- التحكم بفتح وإغلاق شات الروبوت ---
+        aiRobotBtn.addEventListener('click', () => {
+            const isVisible = aiChatWindow.style.display === 'flex';
+            aiChatWindow.style.display = isVisible ? 'none' : 'flex';
+        });
+
+        aiCloseBtn.addEventListener('click', () => {
+            aiChatWindow.style.display = 'none';
+        });
+
+        function appendAiMessage(text, sender) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `ai-msg ${sender}`;
+            msgDiv.textContent = text;
+            aiChatBox.appendChild(msgDiv);
+            aiChatBox.scrollTop = aiChatBox.scrollHeight;
+        }
+
+        async function handleAiSubmit() {
+            const query = aiInputText.value.trim();
+            if (!query) return;
+
+            appendAiMessage(query, 'user');
+            aiInputText.value = '';
+
+            const loadingMsg = currentLang === 'ar' ? 'جاري التفكير...' : 'Thinking...';
+            appendAiMessage(loadingMsg, 'bot');
+
+            setTimeout(() => {
+                let reply = "";
+                const q = query.toLowerCase();
+
+                if (q.includes('برمجة') || q.includes('كورس') || q.includes('code') || q.includes('c++')) {
+                    reply = currentLang === 'ar' 
+                        ? 'أنصحك بالتسجيل في كورس "أساسيات البرمجة بـ C++" المقدم من الطالب أحمد محمود، أو طلب خدمة حل المشاكل البرمجية من حسام مصطفى.' 
+                        : 'I recommend checking out the "C++ Programming Fundamentals" course by Ahmed Mahmoud, or the Debugging service by Hossam Moustafa.';
+                } else if (q.includes('ترجمة') || q.includes('بحث') || q.includes('مقالة') || q.includes('translate')) {
+                    reply = currentLang === 'ar' 
+                        ? 'يمكنك الاستفادة من خدمة "ترجمة أكاديمية" المتاحة بسعر 100 ج.م أو خدمة "تدقيق لغوي وإملائي للأبحاث".' 
+                        : 'You can check our "Academic Translation" service for 100 EGP or "Research Proofreading & Editing".';
+                } else if (q.includes('لاب') || q.includes('ويندوز') || q.includes('بطء') || q.includes('laptop')) {
+                    reply = currentLang === 'ar' 
+                        ? 'خدمة "تصليح لابات وصيانة السوفتوير" المقدمة من يوسف سامح تساعدك في تسريع جهازك وتثبيت الويندوز.' 
+                        : 'Check out the "Laptop Repair & Software Maintenance" service by Youssef Sameh to speed up your laptop.';
+                } else {
+                    reply = currentLang === 'ar' 
+                        ? `يمكنك الاستعانة بأحد الخدمات الـ 15 المتاحة بصفحتنا في مجالات الكورسات، الترجمة، الدعم التقني، التصميم، والتدريب الأكاديمي!` 
+                        : `You can explore any of our 15 available student services spanning courses, translation, tech support, design, and academic counseling!`;
+                }
+
+                aiChatBox.removeChild(aiChatBox.lastChild);
+                appendAiMessage(reply, 'bot');
+            }, 500);
+        }
+
+        aiSendBtn.addEventListener('click', handleAiSubmit);
+        aiInputText.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleAiSubmit();
+        });
+
+        // --- أزرار التحكم بالثيم واللغة ---
+        langToggle.addEventListener('click', () => {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            updateTexts();
+        });
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.body.getAttribute('data-theme') === 'dark';
+            if (isDark) {
+                document.body.removeAttribute('data-theme');
+                themeToggle.innerHTML = `<i class="fa-solid fa-moon"></i> <span id="themeText">${translations[currentLang].darkMode}</span>`;
+            } else {
+                document.body.setAttribute('data-theme', 'dark');
+                themeToggle.innerHTML = `<i class="fa-solid fa-sun"></i> <span id="themeText">${translations[currentLang].lightMode}</span>`;
+            }
+        });
+
+        searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value.trim();
+            renderServices();
+        });
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentCategory = btn.getAttribute('data-category');
+                renderServices();
+            });
+        });
+
+        window.openDetails = function(id, keepOpen = false) {
+            activeModalId = id;
+            const service = servicesData.find(s => s.id === id);
+            if (!service) return;
+            const t = translations[currentLang];
+
+            document.getElementById('modalIcon').innerHTML = `<i class="fa-solid ${service.icon}"></i>`;
+            document.getElementById('modalCategory').textContent = t.categories[service.catKey];
+            document.getElementById('modalTitle').textContent = currentLang === 'ar' ? service.titleAr : service.titleEn;
+            document.getElementById('modalPrice').textContent = service.price;
+            document.getElementById('modalDescription').textContent = currentLang === 'ar' ? service.descAr : service.descEn;
+
+            document.getElementById('providerName').textContent = service.provider.name;
+            document.getElementById('providerEmail').textContent = service.provider.email;
+            document.getElementById('providerPhone').textContent = service.provider.phone;
+
+            if (!keepOpen) {
+                detailsModal.style.display = 'flex';
+            }
+        };
+
+        function closeModal() {
+            detailsModal.style.display = 'none';
+            activeModalId = null;
+        }
+
+        closeModalBtn.addEventListener('click', closeModal);
+        btnBack.addEventListener('click', closeModal);
+
+        window.addEventListener('click', (e) => {
+            if (e.target === detailsModal) closeModal();
+        });
+
+        btnOrder.addEventListener('click', () => {
+            alert(translations[currentLang].orderAlert);
+        });
+
+        updateTexts();
+    </script>
+</body>
+</html>
